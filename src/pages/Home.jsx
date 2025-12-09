@@ -21,37 +21,22 @@ export default function Home({ onNavigate }) {
     return `${Math.min(60, base + (n - 3) * step)}s`;
   }, [curated]);
 
-  // 🧵 Fetch home data
+  // 🧵 Fetch home data from REAL tables
   useEffect(() => {
     const fetchHomeData = async () => {
       try {
-        const [
-          { data: heroData, error: heroError },
-          { data: curatedData, error: curatedError },
-          { data: featuredData, error: featuredError },
-        ] = await Promise.all([
-          supabase
-            .from("home_sections")
-            .select("*")
-            .eq("section_name", "hero")
-            .maybeSingle(),
-          supabase
-            .from("home_curated")
-            .select("*")
-            .order("created_at", { ascending: false }),
-          supabase
-            .from("home_featured")
-            .select("*")
-            .order("created_at", { ascending: false }),
+        const [heroResponse, curatedResponse, featuredResponse] = await Promise.all([
+          // 1. Fetch Hero Image
+          supabase.from("site_assets").select("*").eq("section", "home_hero").limit(1).maybeSingle(),
+          // 2. Fetch Curated Collection (Home Only)
+          supabase.from("home_curated").select("*").order("created_at", { ascending: false }),
+          // 3. Fetch Featured Fabrics (Home Only)
+          supabase.from("home_featured").select("*").order("created_at", { ascending: false }),
         ]);
 
-        if (heroError) console.error(heroError);
-        if (curatedError) console.error(curatedError);
-        if (featuredError) console.error(featuredError);
-
-        setHero(heroData || null);
-        setCurated(curatedData || []);
-        setFeatured(featuredData || []);
+        setHero(heroResponse.data || null);
+        setCurated(curatedResponse.data || []);
+        setFeatured(featuredResponse.data || []);
       } catch (err) {
         console.error("Error fetching home data:", err);
       } finally {
@@ -89,38 +74,37 @@ export default function Home({ onNavigate }) {
       <DiscountBanner />
 
       {/* 🖼️ HERO */}
-      <div className="relative bg-gray-50 overflow-hidden">
+      <div className="relative bg-gray-50 overflow-hidden h-[600px] flex items-center justify-center">
         {hero?.image_url ? (
           <img
             src={hero.image_url}
             alt="Hero"
-            className="absolute inset-0 w-full h-full object-cover opacity-70 will-change-transform"
+            className="absolute inset-0 w-full h-full object-cover opacity-80 will-change-transform"
             style={parallaxTransform}
           />
         ) : (
           <div className="absolute inset-0 bg-gradient-to-br from-indigo-100 to-white"></div>
         )}
-        <div className="relative max-w-7xl mx-auto py-16 text-center">
-          <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
+        
+        <div className="absolute inset-0 bg-black/30"></div>
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 text-center">
+          <h1 className="text-4xl font-extrabold text-white sm:text-5xl md:text-6xl drop-shadow-md">
             <span className="block">{hero?.title || "Your Vision, Our Stitch."}</span>
-            <span className="block text-indigo-600">
+            <span className="block text-indigo-200 mt-2">
               {hero?.subtitle || "Custom Curtains Made for You."}
             </span>
           </h1>
-          <p className="mt-4 text-gray-500 text-lg max-w-2xl mx-auto">
-            {hero?.description || "Experience the luxury of perfectly fitted window treatments."}
-          </p>
-          <div className="mt-6 flex justify-center space-x-3">
+          <div className="mt-8 flex justify-center space-x-4">
             <button
-              onClick={() => onNavigate("catalog")}
-              className="px-8 py-3 bg-indigo-600 text-white rounded-md shadow hover:bg-indigo-700 transition cursor-pointer"
+              onClick={() => onNavigate("catalogues")}
+              className="px-8 py-3 bg-indigo-600 text-white font-bold rounded-md shadow-lg hover:bg-indigo-700 transition cursor-pointer hover:-translate-y-1"
             >
               Start Customizing
             </button>
-
             <button
               onClick={() => onNavigate("measure")}
-              className="px-8 py-3 bg-indigo-100 text-indigo-700 rounded-md hover:bg-indigo-200 transition flex items-center cursor-pointer"
+              className="px-8 py-3 bg-white/90 text-indigo-700 font-bold rounded-md hover:bg-white transition flex items-center cursor-pointer hover:-translate-y-1 shadow-lg"
             >
               <Ruler className="h-5 w-5 mr-2" />
               How to Measure
@@ -129,8 +113,8 @@ export default function Home({ onNavigate }) {
         </div>
       </div>
 
-      {/* OUR CURATED COLLECTION */}
-      <section className="py-16 bg-white">
+      {/* OUR CURATED COLLECTION (Home Specific) */}
+      <section className="py-16 bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h2 className="text-3xl font-extrabold text-gray-900 mb-8">
             Our Curated Collection
@@ -138,11 +122,11 @@ export default function Home({ onNavigate }) {
           {loading ? (
             <p className="text-gray-500">Loading...</p>
           ) : curated.length === 0 ? (
-            <p className="text-gray-400">No curated collection uploaded yet.</p>
+            <p className="text-gray-400">No curated collections added in Dashboard.</p>
           ) : (
             <div className="relative w-full overflow-hidden">
               <div
-                className="scroll-container flex gap-6 whitespace-nowrap"
+                className="scroll-container flex gap-6 whitespace-nowrap py-4"
                 style={{
                   animation: `scrollAlternate ${scrollDuration} ease-in-out infinite alternate`,
                 }}
@@ -150,21 +134,22 @@ export default function Home({ onNavigate }) {
                 {(curated.length >= 4 ? curated.concat(curated) : curated).map((item, i) => (
                   <div
                     key={i}
+                    onClick={() => onNavigate("catalogues")} // Links to Catalogues Page
                     className="inline-block bg-white rounded-lg border shadow-md hover:shadow-glow transition-transform duration-500 hover:-translate-y-1 w-[280px] flex-shrink-0 transform hover:scale-105 cursor-pointer"
                   >
                     <div className="overflow-hidden rounded-t-lg relative">
                       <img
-                        src={item.image_url}
+                        src={item.image_url || "https://via.placeholder.com/300"}
                         alt={item.title}
                         className="h-48 w-full object-cover transition-transform duration-700 ease-out hover:scale-110"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 hover:opacity-30 transition"></div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 hover:opacity-100 transition duration-300"></div>
                     </div>
-                    <div className="p-3">
-                      <h3 className="font-semibold text-gray-900 text-sm">{item.title}</h3>
-                      {item.description && (
-                        <p className="text-xs text-gray-500 mt-1">{item.description}</p>
-                      )}
+                    <div className="p-4 whitespace-normal text-left">
+                      <h3 className="font-semibold text-gray-900 text-lg truncate">{item.title}</h3>
+                      <p className="text-sm text-gray-500 mt-1 line-clamp-2">
+                        {item.description || "Elegant designs for your home."}
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -174,39 +159,42 @@ export default function Home({ onNavigate }) {
         </div>
       </section>
 
-      {/* FEATURED FABRICS */}
-      <section className="max-w-7xl mx-auto px-4 py-16 text-center">
+      {/* FEATURED FABRICS (Home Specific) */}
+      <section className="max-w-7xl mx-auto px-4 py-16 text-center bg-gray-50">
         <h2 className="text-3xl font-extrabold text-gray-900 mb-8">Featured Fabrics</h2>
         {loading ? (
           <p className="text-gray-500">Loading...</p>
         ) : featured.length === 0 ? (
-          <p className="text-gray-400">No featured fabrics uploaded yet.</p>
+          <p className="text-gray-400">No featured fabrics added in Dashboard.</p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 text-left">
             {featured.map((item) => (
               <div
                 key={item.id}
-                className="group bg-white rounded-lg border overflow-hidden shadow-md hover:shadow-glow transition-all duration-500 hover:-translate-y-1 hover:scale-[1.03] cursor-pointer"
+                className="group bg-white rounded-lg border overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1 cursor-pointer"
               >
                 <div className="relative overflow-hidden">
                   <img
                     src={item.image_url}
                     alt={item.title}
-                    className="h-52 w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                    className="h-64 w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-40 transition"></div>
+                  {item.price && (
+                    <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-1 rounded text-xs font-bold text-gray-800 shadow">
+                      {item.price}
+                    </div>
+                  )}
                 </div>
-                <div className="p-4">
-                  <h3 className="font-bold text-lg text-gray-900 group-hover:text-indigo-700 transition-colors">
+                <div className="p-5">
+                  <h3 className="font-bold text-xl text-gray-900 group-hover:text-indigo-700 transition-colors">
                     {item.title}
                   </h3>
-                  <p className="text-sm text-gray-500 mt-1">{item.description}</p>
-                  <div className="mt-4">
+                  <div className="mt-4 flex justify-between items-center">
                     <button
                       onClick={() => onNavigate("shop-fabric")}
                       className="text-indigo-600 font-medium hover:text-indigo-800 flex items-center transition cursor-pointer"
                     >
-                      Explore <ArrowRight className="ml-1 h-4 w-4" />
+                      Shop Now <ArrowRight className="ml-1 h-4 w-4" />
                     </button>
                   </div>
                 </div>
@@ -216,20 +204,22 @@ export default function Home({ onNavigate }) {
         )}
       </section>
 
-      {/* ✨ OUR STITCHING STYLES */}
-      <div className="bg-gray-50 py-20">
+      {/* ✨ OUR STITCHING STYLES (Updated Images - Smaller & Focused) */}
+      <div className="bg-white py-20">
         <div className="max-w-7xl mx-auto text-center px-4">
           <h2 className="text-3xl font-extrabold text-gray-900 mb-4">Our Stitching Styles</h2>
           <p className="text-gray-500 max-w-xl mx-auto mb-12">
             Choose your perfect stitching — every curtain style tailored for timeless elegance and effortless drape.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+            
             {/* RING TOP */}
-            <div className="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-1 border transition-all duration-500">
+            <div className="group bg-gray-50 rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-1 border transition-all duration-500">
               <img
-                src="/style-ring.jpg"
+                src="/style-ring.jpg" 
                 alt="Ring Top"
-                className="w-full aspect-[16/10] object-cover group-hover:scale-105 transition-transform"
+                // ✅ UPDATED: h-48 (smaller) and object-top (focus on top stitching)
+                className="w-full h-48 object-cover object-top group-hover:scale-105 transition-transform"
               />
               <div className="p-8 text-left">
                 <div className="flex items-center gap-3 mb-2">
@@ -253,11 +243,12 @@ export default function Home({ onNavigate }) {
             </div>
 
             {/* PLEATED STYLE */}
-            <div className="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-1 border transition-all duration-500">
+            <div className="group bg-gray-50 rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-1 border transition-all duration-500">
               <img
-                src="/style-track.jpg"
+                src="/style-track.jpg" 
                 alt="Pleated (For Tracks)"
-                className="w-full aspect-[16/10] object-cover group-hover:scale-105 transition-transform"
+                // ✅ UPDATED: h-48 (smaller) and object-top (focus on top stitching)
+                className="w-full h-48 object-cover object-top group-hover:scale-105 transition-transform"
               />
               <div className="p-8 text-left">
                 <div className="flex items-center gap-3 mb-2">

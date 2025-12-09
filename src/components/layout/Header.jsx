@@ -15,22 +15,21 @@ import {
 export default function Header({ cartCount, onNavigate, currentView }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // 🔹 Navigation items
+  // 🔹 Navigation items (Updated with correct 'view' links)
   const navItems = [
-    { id: "home", label: "Home", icon: HomeIcon },
-    { id: "stitch-curtain", label: "Stitch Curtain", icon: Grid, view: "catalogues" },
-    { id: "shop-fabric", label: "Shop Fabric", icon: Scissors, view: "catalogues" },
-    { id: "sofa-fabric", label: "Buy Sofa Fabric", icon: Sofa, view: "catalogues" },
-    { id: "measure", label: "Measurement Guide", icon: Ruler },
-    { id: "design-services", label: "Design Services", icon: PenTool },
-    { id: "contact", label: "Contact", icon: Mail },
+    { id: "home", label: "Home", icon: HomeIcon, view: "home" },
+    { id: "catalogues", label: "Stitch Curtain", icon: Grid, view: "catalogues" }, 
+    { id: "shop-fabric", label: "Shop Fabric", icon: Scissors, view: "shop-fabric" }, // ✅ Fixed
+    { id: "sofa-fabric", label: "Buy Sofa Fabric", icon: Sofa, view: "sofa-fabric" }, // ✅ Fixed
+    { id: "measure", label: "Measurement Guide", icon: Ruler, view: "measure" },
+    { id: "design-services", label: "Design Services", icon: PenTool, view: "design-services" },
+    { id: "contact", label: "Contact", icon: Mail, view: "contact" },
   ];
 
   const handleNavClick = (item) => {
-    if (item.id === "measure") {
-      onNavigate("measure");
-    } else if (item.view === "catalogues") {
-      onNavigate("catalogues", item.id);
+    // ✅ Logic Fix: Use the 'view' property directly
+    if (item.view) {
+      onNavigate(item.view);
     } else {
       onNavigate(item.id);
     }
@@ -73,8 +72,9 @@ export default function Header({ cartCount, onNavigate, currentView }) {
                 <button
                   key={item.id}
                   onClick={() => handleNavClick(item)}
+                  // ✅ Restored your EXACT font styling: text-[15px]
                   className={`relative flex items-center space-x-2 text-[15px] font-semibold tracking-wide transition-all duration-200 cursor-pointer select-none ${
-                    currentView === item.id
+                    currentView === item.view
                       ? "text-indigo-400"
                       : "text-gray-300 hover:text-white"
                   }`}
@@ -92,7 +92,7 @@ export default function Header({ cartCount, onNavigate, currentView }) {
                   {/* Elegant underline hover */}
                   <span
                     className={`absolute bottom-[-6px] left-0 w-full h-[2px] rounded-full transform transition-all duration-300 ${
-                      currentView === item.id
+                      currentView === item.view
                         ? "bg-indigo-500 opacity-100"
                         : "bg-indigo-400 opacity-0 group-hover:opacity-100"
                     }`}
