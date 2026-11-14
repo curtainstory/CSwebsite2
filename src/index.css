@@ -1,1 +1,35 @@
 @import "tailwindcss";
+
+/* Curtain Story — light floral foundation */
+:root {
+  color-scheme: light;
+  --cs-ivory: #FAF7F2;
+  --cs-paper: #FFFCF8;
+  --cs-rose: #B77D88;
+  --cs-rose-deep: #80535E;
+  --cs-sage: #B8C8AE;
+  --cs-peach: #F3D8C7;
+  --cs-lavender: #D9CBE8;
+  --cs-ink: #45483E;
+}
+
+html {
+  background: var(--cs-ivory);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: var(--cs-ivory);
+  color: var(--cs-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: #D9AEB7;
+  color: #45483E;
+}
+
+button, a {
+  -webkit-tap-highlight-color: transparent;
+}
