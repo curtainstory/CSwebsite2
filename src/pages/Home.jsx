@@ -74,7 +74,7 @@ export default function Home({ onNavigate }) {
       <DiscountBanner />
 
       {/* 🖼️ HERO */}
-      <div className="relative bg-gray-50 overflow-hidden h-[600px] flex items-center justify-center">
+      <div className="relative bg-[#FAF7F2] overflow-hidden h-[600px] flex items-center justify-center">
         {hero?.image_url ? (
           <img
             src={hero.image_url}
@@ -83,7 +83,7 @@ export default function Home({ onNavigate }) {
             style={parallaxTransform}
           />
         ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-indigo-100 to-white"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-[#D9CBE8] to-[#FAF7F2]"></div>
         )}
         
         <div className="absolute inset-0 bg-black/30"></div>
@@ -91,20 +91,20 @@ export default function Home({ onNavigate }) {
         <div className="relative z-10 max-w-7xl mx-auto px-4 text-center">
           <h1 className="text-4xl font-extrabold text-white sm:text-5xl md:text-6xl drop-shadow-md">
             <span className="block">{hero?.title || "Your Vision, Our Stitch."}</span>
-            <span className="block text-indigo-200 mt-2">
+            <span className="block text-[#F3D8C7] mt-2">
               {hero?.subtitle || "Custom Curtains Made for You."}
             </span>
           </h1>
           <div className="mt-8 flex justify-center space-x-4">
             <button
               onClick={() => onNavigate("catalogues")}
-              className="px-8 py-3 bg-indigo-600 text-white font-bold rounded-md shadow-lg hover:bg-indigo-700 transition cursor-pointer hover:-translate-y-1"
+              className="px-8 py-3 bg-[#80535E] text-white font-bold rounded-md shadow-lg hover:bg-[#69434C] transition cursor-pointer hover:-translate-y-1"
             >
               Start Customizing
             </button>
             <button
               onClick={() => onNavigate("measure")}
-              className="px-8 py-3 bg-white/90 text-indigo-700 font-bold rounded-md hover:bg-white transition flex items-center cursor-pointer hover:-translate-y-1 shadow-lg"
+              className="px-8 py-3 bg-[#FFFCF8]/90 text-[#80535E] font-bold rounded-md hover:bg-[#FFFCF8] transition flex items-center cursor-pointer hover:-translate-y-1 shadow-lg"
             >
               <Ruler className="h-5 w-5 mr-2" />
               How to Measure
@@ -114,15 +114,15 @@ export default function Home({ onNavigate }) {
       </div>
 
       {/* OUR CURATED COLLECTION (Home Specific) */}
-      <section className="py-16 bg-white overflow-hidden">
+      <section className="py-16 bg-[#FFFCF8] overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <h2 className="text-3xl font-extrabold text-gray-900 mb-8">
+          <h2 className="text-3xl font-extrabold text-[#45483E] mb-8">
             Our Curated Collection
           </h2>
           {loading ? (
-            <p className="text-gray-500">Loading...</p>
+            <p className="text-[#77776D]">Loading...</p>
           ) : curated.length === 0 ? (
-            <p className="text-gray-400">No curated collections added in Dashboard.</p>
+            <p className="text-[#8C8B80]">No curated collections added in Dashboard.</p>
           ) : (
             <div className="relative w-full overflow-hidden">
               <div
@@ -135,7 +135,7 @@ export default function Home({ onNavigate }) {
                   <div
                     key={i}
                     onClick={() => onNavigate("catalogues")} // Links to Catalogues Page
-                    className="inline-block bg-white rounded-lg border shadow-md hover:shadow-glow transition-transform duration-500 hover:-translate-y-1 w-[280px] flex-shrink-0 transform hover:scale-105 cursor-pointer"
+                    className="inline-block bg-[#FFFCF8] rounded-lg border shadow-md hover:shadow-glow transition-transform duration-500 hover:-translate-y-1 w-[280px] flex-shrink-0 transform hover:scale-105 cursor-pointer"
                   >
                     <div className="overflow-hidden rounded-t-lg relative">
                       <img
@@ -146,8 +146,8 @@ export default function Home({ onNavigate }) {
                       <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 hover:opacity-100 transition duration-300"></div>
                     </div>
                     <div className="p-4 whitespace-normal text-left">
-                      <h3 className="font-semibold text-gray-900 text-lg truncate">{item.title}</h3>
-                      <p className="text-sm text-gray-500 mt-1 line-clamp-2">
+                      <h3 className="font-semibold text-[#45483E] text-lg truncate">{item.title}</h3>
+                      <p className="text-sm text-[#77776D] mt-1 line-clamp-2">
                         {item.description || "Elegant designs for your home."}
                       </p>
                     </div>
@@ -160,18 +160,18 @@ export default function Home({ onNavigate }) {
       </section>
 
       {/* FEATURED FABRICS (Home Specific) */}
-      <section className="max-w-7xl mx-auto px-4 py-16 text-center bg-gray-50">
-        <h2 className="text-3xl font-extrabold text-gray-900 mb-8">Featured Fabrics</h2>
+      <section className="max-w-7xl mx-auto px-4 py-16 text-center bg-[#FAF7F2]">
+        <h2 className="text-3xl font-extrabold text-[#45483E] mb-8">Featured Fabrics</h2>
         {loading ? (
-          <p className="text-gray-500">Loading...</p>
+          <p className="text-[#77776D]">Loading...</p>
         ) : featured.length === 0 ? (
-          <p className="text-gray-400">No featured fabrics added in Dashboard.</p>
+          <p className="text-[#8C8B80]">No featured fabrics added in Dashboard.</p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 text-left">
             {featured.map((item) => (
               <div
                 key={item.id}
-                className="group bg-white rounded-lg border overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1 cursor-pointer"
+                className="group bg-[#FFFCF8] rounded-lg border overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1 cursor-pointer"
               >
                 <div className="relative overflow-hidden">
                   <img
@@ -180,19 +180,19 @@ export default function Home({ onNavigate }) {
                     className="h-64 w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                   />
                   {item.price && (
-                    <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-1 rounded text-xs font-bold text-gray-800 shadow">
+                    <div className="absolute top-2 right-2 bg-[#FFFCF8]/90 backdrop-blur-sm px-2 py-1 rounded text-xs font-bold text-[#45483E] shadow">
                       {item.price}
                     </div>
                   )}
                 </div>
                 <div className="p-5">
-                  <h3 className="font-bold text-xl text-gray-900 group-hover:text-indigo-700 transition-colors">
+                  <h3 className="font-bold text-xl text-[#45483E] group-hover:text-[#80535E] transition-colors">
                     {item.title}
                   </h3>
                   <div className="mt-4 flex justify-between items-center">
                     <button
                       onClick={() => onNavigate("shop-fabric")}
-                      className="text-indigo-600 font-medium hover:text-indigo-800 flex items-center transition cursor-pointer"
+                      className="text-[#80535E] font-medium hover:text-[#69434C] flex items-center transition cursor-pointer"
                     >
                       Shop Now <ArrowRight className="ml-1 h-4 w-4" />
                     </button>
@@ -205,16 +205,16 @@ export default function Home({ onNavigate }) {
       </section>
 
       {/* ✨ OUR STITCHING STYLES (Updated Images - Smaller & Focused) */}
-      <div className="bg-white py-20">
+      <div className="bg-[#FFFCF8] py-20">
         <div className="max-w-7xl mx-auto text-center px-4">
-          <h2 className="text-3xl font-extrabold text-gray-900 mb-4">Our Stitching Styles</h2>
-          <p className="text-gray-500 max-w-xl mx-auto mb-12">
+          <h2 className="text-3xl font-extrabold text-[#45483E] mb-4">Our Stitching Styles</h2>
+          <p className="text-[#77776D] max-w-xl mx-auto mb-12">
             Choose your perfect stitching — every curtain style tailored for timeless elegance and effortless drape.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
             
             {/* RING TOP */}
-            <div className="group bg-gray-50 rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-1 border transition-all duration-500">
+            <div className="group bg-[#FAF7F2] rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-1 border transition-all duration-500">
               <img
                 src="/style-ring.jpg" 
                 alt="Ring Top"
@@ -223,27 +223,27 @@ export default function Home({ onNavigate }) {
               />
               <div className="p-8 text-left">
                 <div className="flex items-center gap-3 mb-2">
-                  <div className="w-9 h-9 flex items-center justify-center rounded-full bg-red-100 border border-red-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <div className="w-9 h-9 flex items-center justify-center rounded-full bg-[#F3D8C7] border border-[#D9B7A6]">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-[#9B6873]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <circle cx="12" cy="12" r="9" />
                       <circle cx="12" cy="12" r="3" />
                     </svg>
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900">Ring Top Curtains</h3>
+                  <h3 className="text-lg font-semibold text-[#45483E]">Ring Top Curtains</h3>
                 </div>
-                <p className="text-gray-600 text-sm mb-5 leading-relaxed">
+                <p className="text-[#686B60] text-sm mb-5 leading-relaxed">
                   Designed for rods — these curtains glide smoothly with ring fittings, creating soft, symmetrical folds that define modern luxury.
                 </p>
-                <ul className="text-sm text-gray-700 space-y-1.5">
-                  <li className="flex items-center"><CheckCircle className="h-4 w-4 mr-2 text-green-500" />Elegant, flowing folds</li>
-                  <li className="flex items-center"><CheckCircle className="h-4 w-4 mr-2 text-green-500" />Smooth glide on rods</li>
-                  <li className="flex items-center"><CheckCircle className="h-4 w-4 mr-2 text-green-500" />Durable rings in steel or plastic</li>
+                <ul className="text-sm text-[#5D6256] space-y-1.5">
+                  <li className="flex items-center"><CheckCircle className="h-4 w-4 mr-2 text-[#78886C]" />Elegant, flowing folds</li>
+                  <li className="flex items-center"><CheckCircle className="h-4 w-4 mr-2 text-[#78886C]" />Smooth glide on rods</li>
+                  <li className="flex items-center"><CheckCircle className="h-4 w-4 mr-2 text-[#78886C]" />Durable rings in steel or plastic</li>
                 </ul>
               </div>
             </div>
 
             {/* PLEATED STYLE */}
-            <div className="group bg-gray-50 rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-1 border transition-all duration-500">
+            <div className="group bg-[#FAF7F2] rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-1 border transition-all duration-500">
               <img
                 src="/style-track.jpg" 
                 alt="Pleated (For Tracks)"
@@ -252,20 +252,20 @@ export default function Home({ onNavigate }) {
               />
               <div className="p-8 text-left">
                 <div className="flex items-center gap-3 mb-2">
-                  <div className="w-9 h-9 flex items-center justify-center rounded-full bg-indigo-100 border border-indigo-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <div className="w-9 h-9 flex items-center justify-center rounded-full bg-[#D9CBE8] border border-[#B9A8CD]">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-[#80535E]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path d="M4 4v16m8-16v16m8-16v16" />
                     </svg>
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900">Pleated Curtains</h3>
+                  <h3 className="text-lg font-semibold text-[#45483E]">Pleated Curtains</h3>
                 </div>
-                <p className="text-gray-600 text-sm mb-5 leading-relaxed">
+                <p className="text-[#686B60] text-sm mb-5 leading-relaxed">
                   Made for tracks — precision-stitched pleats offer neat, uniform draping that elevates both formal and classic interiors.
                 </p>
-                <ul className="text-sm text-gray-700 space-y-1.5">
-                  <li className="flex items-center"><CheckCircle className="h-4 w-4 mr-2 text-green-500" />Tailored pleats with perfect spacing</li>
-                  <li className="flex items-center"><CheckCircle className="h-4 w-4 mr-2 text-green-500" />Suitable for ceiling-mounted tracks</li>
-                  <li className="flex items-center"><CheckCircle className="h-4 w-4 mr-2 text-green-500" />Elegant and timeless finish</li>
+                <ul className="text-sm text-[#5D6256] space-y-1.5">
+                  <li className="flex items-center"><CheckCircle className="h-4 w-4 mr-2 text-[#78886C]" />Tailored pleats with perfect spacing</li>
+                  <li className="flex items-center"><CheckCircle className="h-4 w-4 mr-2 text-[#78886C]" />Suitable for ceiling-mounted tracks</li>
+                  <li className="flex items-center"><CheckCircle className="h-4 w-4 mr-2 text-[#78886C]" />Elegant and timeless finish</li>
                 </ul>
               </div>
             </div>
@@ -285,12 +285,12 @@ export default function Home({ onNavigate }) {
 
         @media (prefers-color-scheme: light) {
           .hover\\:shadow-glow:hover {
-            box-shadow: 0 8px 25px rgba(218,165,32,0.35), 0 0 10px rgba(255,215,0,0.25);
+            box-shadow: 0 8px 25px rgba(183,125,136,0.24), 0 0 10px rgba(243,216,199,0.22);
           }
         }
         @media (prefers-color-scheme: dark) {
           .hover\\:shadow-glow:hover {
-            box-shadow: 0 8px 25px rgba(99,102,241,0.35), 0 0 10px rgba(129,140,248,0.25);
+            box-shadow: 0 8px 25px rgba(128,83,94,0.22), 0 0 10px rgba(183,125,136,0.18);
           }
         }
       `}</style>
