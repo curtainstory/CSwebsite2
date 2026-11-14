@@ -37,7 +37,7 @@ export default function Header({ cartCount, onNavigate, currentView }) {
   };
 
   return (
-    <header className="bg-gray-900 text-white font-sans shadow-lg sticky top-0 z-50 backdrop-blur-sm bg-opacity-95">
+    <header className="bg-[#45483E] text-white font-sans shadow-lg sticky top-0 z-50 backdrop-blur-sm bg-opacity-95">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20 md:h-24">
           {/* Left: Logo + mobile toggle */}
@@ -46,7 +46,7 @@ export default function Header({ cartCount, onNavigate, currentView }) {
             <div className="md:hidden mr-4">
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-2 text-white hover:text-indigo-400 transition-colors cursor-pointer"
+                className="p-2 text-white hover:text-[#E8BFC3] transition-colors cursor-pointer"
               >
                 {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </button>
@@ -75,8 +75,8 @@ export default function Header({ cartCount, onNavigate, currentView }) {
                   // ✅ Restored your EXACT font styling: text-[15px]
                   className={`relative flex items-center space-x-2 text-[15px] font-semibold tracking-wide transition-all duration-200 cursor-pointer select-none ${
                     currentView === item.view
-                      ? "text-indigo-400"
-                      : "text-gray-300 hover:text-white"
+                      ? "text-[#E8BFC3]"
+                      : "text-[#F0EAE2] hover:text-[#FFFFFF]"
                   }`}
                   style={{
                     fontSmooth: "antialiased",
@@ -93,8 +93,8 @@ export default function Header({ cartCount, onNavigate, currentView }) {
                   <span
                     className={`absolute bottom-[-6px] left-0 w-full h-[2px] rounded-full transform transition-all duration-300 ${
                       currentView === item.view
-                        ? "bg-indigo-500 opacity-100"
-                        : "bg-indigo-400 opacity-0 group-hover:opacity-100"
+                        ? "bg-[#B77D88] opacity-100"
+                        : "bg-[#D9AEB7] opacity-0 group-hover:opacity-100"
                     }`}
                   ></span>
                 </button>
@@ -104,7 +104,7 @@ export default function Header({ cartCount, onNavigate, currentView }) {
             {/* 🛍️ Cart */}
             <button
               onClick={() => onNavigate("cart")}
-              className="relative p-2 text-white hover:text-indigo-400 transition-all cursor-pointer"
+              className="relative p-2 text-white hover:text-[#E8BFC3] transition-all cursor-pointer"
             >
               <ShoppingBag className="h-6 w-6" />
               {cartCount > 0 && (
@@ -119,13 +119,13 @@ export default function Header({ cartCount, onNavigate, currentView }) {
 
       {/* 📱 Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-gray-800 border-t border-gray-700">
+        <div className="md:hidden bg-[#53564B] border-t border-[#65685C]">
           <div className="px-4 pt-2 pb-4 space-y-1">
             {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => handleNavClick(item)}
-                className="block w-full text-left px-3 py-3 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 cursor-pointer tracking-wide"
+                className="block w-full text-left px-3 py-3 rounded-md text-base font-medium text-[#F0EAE2] hover:text-[#FFFFFF] hover:bg-[#626658] cursor-pointer tracking-wide"
               >
                 <div className="flex items-center space-x-3">
                   <item.icon className="h-5 w-5 opacity-80" />
